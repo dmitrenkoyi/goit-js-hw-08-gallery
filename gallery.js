@@ -45,25 +45,21 @@ function onGallaryClick(e) {
   modalImg.src = target.dataset.source;
 
 };
-  
-window.addEventListener('keydown', event => {
-    if (event.code === 'Escape') {
-      onCloseModal();
-    }
-  });
-  
+ 
 
 function openModal() {
+  window.addEventListener('keydown', event => {
+    if (event.code === 'Escape') {
+      onCloseModal();
+  }
+  });
   modalEl.classList.add('is-open');
 
-  console.log('это открытие модалки');
 };
 
 function onCloseModal(){
     modalEl.classList.remove('is-open');
   modalImg.src = '';
-
-  console.log('это закрытие модалки');
 };
 
 // пролистывание клавишами "влево" и "вправо"
