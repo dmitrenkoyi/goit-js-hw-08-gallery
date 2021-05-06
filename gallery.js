@@ -1,6 +1,11 @@
 import galleryItems from './gallery-items.js';
 
 const galleryEl = document.querySelector('.js-gallery');
+const modalEl = document.querySelector('.js-lightbox');
+const modalImg = document.querySelector('.lightbox__image');
+const modalCloseBtn = document.querySelector('button[data-action="close-lightbox"]');
+const overlay = document.querySelector('.lightbox__overlay');
+
 
 const createGalleryMarkup = galleryItems.map(({ preview, original,  description}) => {
   return `
@@ -22,13 +27,10 @@ const createGalleryMarkup = galleryItems.map(({ preview, original,  description}
 galleryEl.insertAdjacentHTML('beforeend', createGalleryMarkup);
 
 
-const modalEl = document.querySelector('.js-lightbox');
-const modalImg = document.querySelector('.lightbox__image');
-const closeBtn = document.querySelector('button[data-action="close-lightbox"]');
-const overlay = document.querySelector('.lightbox__overlay');
-
 galleryEl.addEventListener('click', onGallaryClick);
-modalEl.addEventListener('click', CloseModal);
+modalCloseBtn.addEventListener('click', onCloseModal);
+overlay.addEventListener('click', onCloseModal);
+
 
 function onGallaryClick(e) {
     e.preventDefault();
@@ -40,20 +42,28 @@ function onGallaryClick(e) {
    
     openModal();   
     
-    modalImg.src = target.dataset.source;
-    
-    closeBtn.addEventListener('click', CloseModal);
-    window.addEventListener('click', event => {
-        if (event.code === overlay) {
-            CloseModal();
-        }
-    });
-    
-    window.addEventListener('keydown', event => {
-      if (event.code === 'Escape') {
-        CloseModal();
-      }
-    });
+  modalImg.src = target.dataset.source;
+
+};
+  
+window.addEventListener('keydown', event => {
+    if (event.code === 'Escape') {
+      onCloseModal();
+    }
+  });
+  
+
+function openModal() {
+  modalEl.classList.add('is-open');
+
+  console.log('это открытие модалки');
+};
+
+function onCloseModal(){
+    modalEl.classList.remove('is-open');
+  modalImg.src = '';
+
+  console.log('это закрытие модалки');
 };
 
 // пролистывание клавишами "влево" и "вправо"
@@ -87,11 +97,3 @@ document.addEventListener('keydown', e => {
 });
 
 
-function openModal() {
-    modalEl.classList.add('is-open');
-};
-
-function CloseModal(){
-    modalEl.classList.remove('is-open');
-    modalImg.src = '';
-};
